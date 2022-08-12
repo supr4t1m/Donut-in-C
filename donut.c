@@ -98,6 +98,8 @@ void render_frame(float A, float B) {
 	for (int i=0; i<screen_width; i++) {
 		for (int j=0; j<screen_height; j++) {
 			putchar(output[screen_height*i + j]);
+			// to make the torus more round
+			putchar(' ');
 		}
 		putchar('\n');
 	}
