@@ -68,7 +68,7 @@ void render_cube_frame(float phix, float phiy, float phiz) {
                     y = h;
                     z = v;
                     normal[0] = 1; normal[1] = 0; normal[2] = 0;
-                } else if (side == 3) { // [-1, 0, 0] // side doesn't reflect light
+                } else if (side == 3) { // [-1, 0, 0] 
                     x = -1;
                     y = v;
                     z = h;
