@@ -108,6 +108,11 @@ void render_cube_frame(float phix, float phiy, float phiz) {
                         int luminance_index = L*8;
                         output[xp*screen_height + yp] = ".,-~:;=!*#$@"[luminance_index];
                     }
+                } else {
+                	if (ooz > zbuffer[xp*screen_height + yp]) {
+                		zbuffer[xp*screen_height + yp] = ooz;
+                		output[xp*screen_height + yp] = ' ';
+                	}
                 }
             }
 
