@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
-#include "matrix_operation.h"
+#include "vector_operation.h"
 
 #define PI M_PI
 
@@ -26,7 +26,6 @@ void render_cube_frame(float phix, float phiy, float phiz) {
 
     char output[screen_width*screen_height];
     float zbuffer[screen_width*screen_height];
-    float normal[3];
 
     for (int i=0; i<screen_width; i++)
         for (int j=0; j<screen_height; j++) { 
@@ -46,12 +45,13 @@ void render_cube_frame(float phix, float phiy, float phiz) {
                        { sinphiz, cosphiz, 0 },
                        { 0, 0, 1}};
 
-    for (float h=-H; h<H; h+=0.001) {
-        for (float v=-V; v<V; v+=0.001) {
+    for (float h=-H; h<H; h+=0.01) {
+        for (float v=-V; v<V; v+=0.01) {
             float x = 0;
             float y = 0;
             float z = 0;
-
+            float normal[] = {0, 0, 0};
+            
             for (int side=0; side<6; side++) { // [0, 0, 1]
                 if (side==0) {
                     x = h;
@@ -63,16 +63,16 @@ void render_cube_frame(float phix, float phiy, float phiz) {
                     y = v;
                     z = -1;
                     normal[0] = 0; normal[1] = 0; normal[2] = -1;
-                } else if (side == 2) { // [1, 0, 0]
+                } else if (side == 2) { // [1, 0, 0] 
                     x = 1;
-                    y = v;
-                    z = h;
+                    y = h;
+                    z = v;
                     normal[0] = 1; normal[1] = 0; normal[2] = 0;
-                } else if (side == 3) { // [-1, 0, 0]
+                } else if (side == 3) { // [-1, 0, 0] // side doesn't reflect light
                     x = -1;
                     y = v;
                     z = h;
-                    normal[0] = -1; normal[0] = 0; normal[2] = 0;
+                    normal[0] = -1; normal[1] = 0; normal[2] = 0;
                 } else if (side == 4) { // [0, 1, 0]
                     x = h;
                     y = 1;
@@ -100,7 +100,7 @@ void render_cube_frame(float phix, float phiy, float phiz) {
                 int yp = (int) (screen_height/2 - K1*ooz*point[1]);
 
                 float L = luminance(normal, light_direction);
-
+                
                 if (L > 0) {
                     if (ooz > zbuffer[xp*screen_height + yp]) {
                         zbuffer[xp*screen_height + yp] = ooz;
@@ -109,6 +109,7 @@ void render_cube_frame(float phix, float phiy, float phiz) {
                         output[xp*screen_height + yp] = ".,-~:;=!*#$@"[luminance_index];
                     }
                 } else {
+                // if the dark point is in the front
                 	if (ooz > zbuffer[xp*screen_height + yp]) {
                 		zbuffer[xp*screen_height + yp] = ooz;
                 		output[xp*screen_height + yp] = ' ';
@@ -134,7 +135,7 @@ int main() {
     float A = 0, B = 0, C = 0;
 
     while(1) 
-        render_cube_frame(A, B+=0.3, C+=0.3);
+        render_cube_frame(A+=0.01, B+=0.01, C+=0.01);
 
     return 0;
 }
