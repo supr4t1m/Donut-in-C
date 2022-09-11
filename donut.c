@@ -94,6 +94,7 @@ void render_frame(float A, float B) {
 	}
 // ASCII escape to bring the cursor to home, 
 // It is essentially H() function
+// for more information visit https://notes.burke.libbey.me/ansi-escape-codes/
 	printf("\x1b[H");
 	for (int i=0; i<screen_width; i++) {
 		for (int j=0; j<screen_height; j++) {
